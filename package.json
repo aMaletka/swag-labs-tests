@@ -1,0 +1,17 @@
+{
+  "name": "swag-labs-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "e2e:run": "playwright test --workers 2",
+    "e2e:debug": "playwright test --workers 1 --debug"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.40.1",
+    "@types/node": "^20.10.6"
+  }
+}
