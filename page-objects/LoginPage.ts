@@ -26,9 +26,6 @@ export class LoginPage {
     await this.inputPassword.fill(password)
     await this.loginButton.click()
   }
-  public async clickLoginButton(): Promise<void> {
-    await this.loginButton.click()
-  }
 
   public async closeErrorXButton(): Promise<void> {
     await this.errorXButton.click()
