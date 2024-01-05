@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test"
+import { User } from "../builders/userBuilder"
 
 export class CheckoutInformationPage {
   public readonly page: Page
@@ -14,10 +15,11 @@ export class CheckoutInformationPage {
     this.inputpostalCodeCheckout = page.locator("#postal-code")
     this.buttonContinueCheckout = page.locator("#continue")
   }
-  public async fillFormCheckoutStepOne(): Promise<void> {
-    await this.inputFirstNameCheckout.fill("Anna")
-    await this.inputLastnameCheckout.fill("Kowalska")
-    await this.inputpostalCodeCheckout.fill("11-111")
+
+  public async fillFormCheckoutStepOne(user: User): Promise<void> {
+    await this.inputFirstNameCheckout.fill(user.firstname)
+    await this.inputLastnameCheckout.fill(user.lastname)
+    await this.inputpostalCodeCheckout.fill(user.postelCode)
     await this.buttonContinueCheckout.click()
   }
 }
