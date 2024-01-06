@@ -7,6 +7,7 @@ import { CheckoutOverviewPage } from "../page-objects/CheckoutOverview"
 import { CheckoutCompletePage } from "../page-objects/CheckoutCompletePage"
 import { getUserData } from "../builders/userBuilder"
 import { ProductDetailsPage } from "../page-objects/ProductDetailsPage"
+import { userInfo } from "os"
 
 test.describe("Product sales process", () => {
   test(`When user buy product and fill form 
@@ -49,5 +50,27 @@ test.describe("Product sales process", () => {
     await productDetailsPage.verifyQuantityInCart("1")
     await productDetailsPage.clickAddToCart()
     await productDetailsPage.verifyQuantityInCart("2")
+  })
+})
+test.describe("Form validity in checkout", () => {
+  test(`When user fill form and click cancel then user information is cleared`, async ({
+    page,
+  }) => {
+    const user = getUserData()
+    await loginToAccount(page, "standard_user")
+    const dashboardPage = new DashboardPage(page)
+    await dashboardPage.addFirstProductToCart()
+    await dashboardPage.goToShoppingCart()
+    const shoppingCartPage = new ShoppingCartPage(page)
+    await shoppingCartPage.goToCheckout()
+    const checkoutInformationPage = new CheckoutInformationPage(page)
+    await checkoutInformationPage.fillFormCheckoutStepOneWithoutClickButtonContinue(
+      user
+    )
+    await checkoutInformationPage.clickButtonCancel()
+    await shoppingCartPage.goToCheckout()
+    await expect(checkoutInformationPage.inputFirstNameCheckout).toBeEmpty()
+    await expect(checkoutInformationPage.inputLastnameCheckout).toBeEmpty()
+    await expect(checkoutInformationPage.inputpostalCodeCheckout).toBeEmpty()
   })
 })
