@@ -1,17 +1,15 @@
 import { Locator, Page } from "@playwright/test"
+import { BasePage } from "./BasePage"
 
-export class CheckoutOverviewPage {
-  public readonly page: Page
+export class CheckoutOverviewPage extends BasePage {
   public readonly buttonFinish: Locator
   public readonly removeButtonProductBike: Locator
-  public readonly shoppingCartOverview: Locator
   public readonly backToContinueShopping: Locator
 
   public constructor(page: Page) {
-    this.page = page
+    super(page)
     this.buttonFinish = page.locator("#finish")
     this.removeButtonProductBike = page.locator("#remove-sauce-labs-bike-light")
-    this.shoppingCartOverview = page.locator(".shopping_cart_container")
     this.backToContinueShopping = page.locator("#continue-shopping")
   }
 

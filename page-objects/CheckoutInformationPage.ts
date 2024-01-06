@@ -1,15 +1,15 @@
 import { Locator, Page } from "@playwright/test"
 import { User } from "../builders/userBuilder"
+import { BasePage } from "./BasePage"
 
-export class CheckoutInformationPage {
-  public readonly page: Page
+export class CheckoutInformationPage extends BasePage {
   public readonly inputFirstNameCheckout: Locator
   public readonly inputLastnameCheckout: Locator
   public readonly inputpostalCodeCheckout: Locator
   public readonly buttonContinueCheckout: Locator
 
   public constructor(page: Page) {
-    this.page = page
+    super(page)
     this.inputFirstNameCheckout = page.locator("#first-name")
     this.inputLastnameCheckout = page.locator("#last-name")
     this.inputpostalCodeCheckout = page.locator("#postal-code")

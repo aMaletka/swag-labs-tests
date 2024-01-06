@@ -1,14 +1,12 @@
 import { Locator, Page } from "@playwright/test"
+import { BasePage } from "./BasePage"
 
-export class ProductDetailsPage {
-  public readonly page: Page
+export class ProductDetailsPage extends BasePage {
   public readonly buttonAddToCart: Locator
-  public readonly shoppingCartDetails: Locator
 
   public constructor(page: Page) {
-    this.page = page
+    super(page)
     this.buttonAddToCart = page.locator(".btn_primary")
-    this.shoppingCartDetails = page.locator("#shopping_cart_container")
   }
 
   public async clickAddToCart(): Promise<void> {

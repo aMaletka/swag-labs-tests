@@ -1,11 +1,11 @@
 import { Locator, Page } from "@playwright/test"
+import { BasePage } from "./BasePage"
 
-export class CheckoutCompletePage {
-  public readonly page: Page
+export class CheckoutCompletePage extends BasePage {
   public readonly buttonBackHome: Locator
 
   public constructor(page: Page) {
-    this.page = page
+    super(page)
     this.buttonBackHome = page.locator("#back-to-products")
   }
 

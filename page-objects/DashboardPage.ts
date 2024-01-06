@@ -1,17 +1,15 @@
 import { Locator, Page } from "@playwright/test"
+import { BasePage } from "./BasePage"
 
-export class DashboardPage {
-  public readonly page: Page
+export class DashboardPage extends BasePage {
   public readonly hamburgerMenu: Locator
-  public readonly iconShoppingCart: Locator
   public readonly buttonAddToCartFirst: Locator
   public readonly buttonAddToCartSecond: Locator
   public readonly titleSecondProductBike: Locator
 
   public constructor(page: Page) {
-    this.page = page
+    super(page)
     this.hamburgerMenu = page.locator("#react-burger-menu-btn")
-    this.iconShoppingCart = page.locator(".shopping_cart_container")
     this.buttonAddToCartFirst = page.locator("#add-to-cart-sauce-labs-backpack")
     this.buttonAddToCartSecond = page.locator(
       "#add-to-cart-sauce-labs-bike-light"
