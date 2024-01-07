@@ -16,3 +16,18 @@ export const loginToAccount = async (page: Page, user: User): Promise<void> => {
   await loginPage.inputPassword.fill("secret_sauce")
   await loginPage.loginButton.click()
 }
+
+export type SortProducts = "az" | "za" | "lohi" | "hilo"
+
+export const checkPriceSort = async (values: string[]): Promise<boolean> => {
+  const arr: number[] = values.map((value) => parseFloat(value.replace("$", "")))
+
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (arr[i] > arr[i + 1]) {
+      console.log("zwalone")
+      return false
+    }
+  }
+  console.log("git")
+  return true
+}

@@ -1,20 +1,18 @@
 import { Locator, Page } from "@playwright/test"
+import { BasePage } from "./BasePage"
 
-export class LoginPage {
-  public readonly page: Page
+export class LoginPage extends BasePage {
   public readonly inputUserName: Locator
   public readonly inputPassword: Locator
   public readonly loginButton: Locator
   public readonly errorMessage: Locator
-  public readonly errorXButton: Locator
 
   public constructor(page: Page) {
-    this.page = page
+    super(page)
     this.inputUserName = page.locator("#user-name")
     this.inputPassword = page.locator("#password")
     this.loginButton = page.locator("#login-button")
     this.errorMessage = page.locator('[data-test="error"]')
-    this.errorXButton = page.locator(".error-button")
   }
 
   public async goTo(): Promise<void> {

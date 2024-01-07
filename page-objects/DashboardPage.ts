@@ -1,11 +1,14 @@
 import { Locator, Page } from "@playwright/test"
 import { BasePage } from "./BasePage"
+import { SortProducts } from "../support/helpers"
 
 export class DashboardPage extends BasePage {
   public readonly hamburgerMenu: Locator
   public readonly buttonAddToCartFirst: Locator
   public readonly buttonAddToCartSecond: Locator
   public readonly titleSecondProductBike: Locator
+  public readonly productItemPrice: Locator
+  public readonly selectSortProducts: Locator
 
   public constructor(page: Page) {
     super(page)
@@ -15,6 +18,8 @@ export class DashboardPage extends BasePage {
       "#add-to-cart-sauce-labs-bike-light"
     )
     this.titleSecondProductBike = page.locator("#item_0_title_link")
+    this.productItemPrice = page.locator(".inventory_item_price")
+    this.selectSortProducts = page.locator(".product_sort_container")
   }
 
   public async addFirstProductToCart(): Promise<void> {
@@ -30,5 +35,13 @@ export class DashboardPage extends BasePage {
 
   public async goToDetailsBikeProduct(): Promise<void> {
     await this.titleSecondProductBike.click()
+  }
+
+  public async getAllPrices(): Promise<string[]> {
+    return await this.productItemPrice.allInnerTexts()
+  }
+
+  public async selectHowToSortProducts(sort: SortProducts): Promise<void> {
+    await this.selectSortProducts.selectOption(sort)
   }
 }
