@@ -7,7 +7,6 @@ import { CheckoutOverviewPage } from "../page-objects/CheckoutOverview"
 import { CheckoutCompletePage } from "../page-objects/CheckoutCompletePage"
 import { getUserData } from "../builders/userBuilder"
 import { ProductDetailsPage } from "../page-objects/ProductDetailsPage"
-import { userInfo } from "os"
 
 test.describe("Product sales process", () => {
   test(`When user buy product and fill form 
@@ -23,7 +22,8 @@ test.describe("Product sales process", () => {
     const shoppingCartPage = new ShoppingCartPage(page)
     await shoppingCartPage.goToCheckout()
     const checkoutInformationPage = new CheckoutInformationPage(page)
-    await checkoutInformationPage.fillFormCheckoutStepOne(user)
+    await checkoutInformationPage.fillFormCheckoutStepOne(user.firstname, user.lastname, user.postalCode)
+    await checkoutInformationPage.clickButtonContinue()
     const checkoutOverviewPage = new CheckoutOverviewPage(page)
     await checkoutOverviewPage.clickButtonFinish()
     const checkoutCompletePage = new CheckoutCompletePage(page)
@@ -31,9 +31,7 @@ test.describe("Product sales process", () => {
     await dashboardPage.verifyEmptyCart()
   })
   test(`Given user can add product to cart 
-  then remove it and add this product again from product details page`, async ({
-    page,
-  }) => {
+  then remove it and add this product again from product details page`, async ({ page }) => {
     await loginToAccount(page, "standard_user")
     const dashboardPage = new DashboardPage(page)
     await dashboardPage.verifyEmptyCart()
@@ -52,10 +50,9 @@ test.describe("Product sales process", () => {
     await productDetailsPage.verifyQuantityInCart("2")
   })
 })
+
 test.describe("Form validity in checkout", () => {
-  test(`When user fill form and click cancel then user information is cleared`, async ({
-    page,
-  }) => {
+  test(`When user fill form and click cancel then user information is cleared`, async ({ page }) => {
     const user = getUserData()
     await loginToAccount(page, "standard_user")
     const dashboardPage = new DashboardPage(page)
@@ -64,13 +61,31 @@ test.describe("Form validity in checkout", () => {
     const shoppingCartPage = new ShoppingCartPage(page)
     await shoppingCartPage.goToCheckout()
     const checkoutInformationPage = new CheckoutInformationPage(page)
-    await checkoutInformationPage.fillFormCheckoutStepOneWithoutClickButtonContinue(
-      user
-    )
+    await checkoutInformationPage.fillFormCheckoutStepOne(user.firstname, user.lastname, user.postalCode)
+    await expect(checkoutInformationPage.inputFirstNameCheckout).toHaveValue(user.firstname)
+    await expect(checkoutInformationPage.inputLastNameCheckout).toHaveValue(user.lastname)
+    await expect(checkoutInformationPage.inputpostalCodeCheckout).toHaveValue(user.postalCode)
     await checkoutInformationPage.clickButtonCancel()
     await shoppingCartPage.goToCheckout()
     await expect(checkoutInformationPage.inputFirstNameCheckout).toBeEmpty()
-    await expect(checkoutInformationPage.inputLastnameCheckout).toBeEmpty()
+    await expect(checkoutInformationPage.inputLastNameCheckout).toBeEmpty()
     await expect(checkoutInformationPage.inputpostalCodeCheckout).toBeEmpty()
+  })
+  test(`When user fill information in checkout without firstname,
+   then user receiver message about lack of name`, async ({ page }) => {
+    const user = getUserData()
+    await loginToAccount(page, "standard_user")
+    const dashboardPage = new DashboardPage(page)
+    await dashboardPage.addFirstProductToCart()
+    await dashboardPage.goToShoppingCart()
+    const shoppingCartPage = new ShoppingCartPage(page)
+    await shoppingCartPage.goToCheckout()
+    const checkoutInformationPage = new CheckoutInformationPage(page)
+    await checkoutInformationPage.fillFormCheckoutStepOne("", user.lastname, user.postalCode)
+    await checkoutInformationPage.clickButtonContinue()
+    await expect(checkoutInformationPage.errorMessage).toHaveText("Error: First Name is required")
+    await checkoutInformationPage.closeErrorXButton()
+    await checkoutInformationPage.fillFormCheckoutStepOne(user.firstname, user.lastname, user.postalCode)
+    await checkoutInformationPage.clickButtonContinue()
   })
 })
