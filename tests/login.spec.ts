@@ -17,9 +17,7 @@ test.describe("Login page", () => {
     const loginPage = new LoginPage(page)
     await loginPage.goTo()
     await loginPage.login("locked_out_user", "secret_sauce")
-    await expect(loginPage.errorMessage).toHaveText(
-      "Epic sadface: Sorry, this user has been locked out."
-    )
+    await expect(loginPage.errorMessage).toHaveText("Epic sadface: Sorry, this user has been locked out.")
     await loginPage.closeErrorXButton()
   })
 
@@ -28,9 +26,7 @@ test.describe("Login page", () => {
     const loginPage = new LoginPage(page)
     await loginPage.goTo()
     await loginPage.login("", "secret_sauce")
-    await expect(loginPage.errorMessage).toHaveText(
-      "Epic sadface: Username is required"
-    )
+    await expect(loginPage.errorMessage).toHaveText("Epic sadface: Username is required")
     await loginPage.closeErrorXButton()
     await loginPage.login("visual_user", "secret_sauce")
     const dashboardPage = new DashboardPage(page)
@@ -42,9 +38,7 @@ test.describe("Login page", () => {
     const loginPage = new LoginPage(page)
     await loginPage.goTo()
     await loginPage.login("performance_glitch_user", "")
-    await expect(loginPage.errorMessage).toHaveText(
-      "Epic sadface: Password is required"
-    )
+    await expect(loginPage.errorMessage).toHaveText("Epic sadface: Password is required")
     await loginPage.closeErrorXButton()
     await loginPage.login("performance_glitch_user", "secret_sauce")
     const dashboardPage = new DashboardPage(page)
@@ -56,18 +50,14 @@ test.describe("Login page", () => {
     const loginPage = new LoginPage(page)
     await loginPage.goTo()
     await loginPage.login("", "")
-    await expect(loginPage.errorMessage).toHaveText(
-      "Epic sadface: Username is required"
-    )
+    await expect(loginPage.errorMessage).toHaveText("Epic sadface: Username is required")
     await loginPage.closeErrorXButton()
     await loginPage.login("problem_user", "secret_sauce")
     const dashboardPage = new DashboardPage(page)
     await expect(dashboardPage.iconShoppingCart).toBeVisible()
   })
   test(`When user provides incorrect login details,
-   then user receive a message that they don't match any user in this service`, async ({
-    page,
-  }) => {
+   then user receive a message that they don't match any user in this service`, async ({ page }) => {
     const loginPage = new LoginPage(page)
     await loginPage.goTo()
     await loginPage.login("xyz", "yxz")
