@@ -24,10 +24,17 @@ export const checkPriceSort = async (values: string[]): Promise<boolean> => {
 
   for (let i = 0; i < arr.length - 1; i++) {
     if (arr[i] > arr[i + 1]) {
-      console.log("zwalone")
       return false
     }
   }
-  console.log("git")
+  return true
+}
+
+export const checkNameSort = async (values: string[]): Promise<boolean> => {
+  for (let i = 0; i < values.length - 1; i++) {
+    if (values[i] < values[i + 1]) {
+      return false
+    }
+  }
   return true
 }
